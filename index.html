@@ -24,6 +24,9 @@
       position: relative;
       z-index: 10;
     }
+    .hidden-number {
+      display: none;
+    }
   </style>
 </head>
 <body class="bg-gray-100 min-h-screen flex items-center justify-center p-6">
@@ -38,6 +41,13 @@
         placeholder="e.g. linear-gradient(180deg, #000000 50%, #afb6c0 50%)"
         class="w-full p-3 border border-gray-300 shadow-sm rounded"
       ></textarea>
+
+      <div class="mt-4">
+        <label class="inline-flex items-center space-x-2">
+          <input type="checkbox" id="toggleNumbers" checked class="accent-blue-600">
+          <span class="text-sm text-gray-700">Show Numbers</span>
+        </label>
+      </div>
     </div>
 
 
@@ -46,35 +56,40 @@
 
       <div class="flex flex-col items-center space-y-4">
         <div class="text-sm font-medium text-gray-700 mb-2">View in light mode</div>
-        <div class="flex items-center justify-center text-[6rem] leading-none font-bold w-80 h-48 text-black bg-gray-300 text-center" id="bigLight">32</div>
-        <div class="flex items-center justify-center text-[1.75rem] leading-none font-bold w-16 h-10 text-black bg-gray-300 text-center" id="xxsmall2Light">32</div>
-        <div class="flex items-center justify-center text-[24px] leading-none font-medium w-12 h-8 text-black bg-gray-300 text-center" id="xxsmall3Light">32</div>
+        <div class="flex items-center justify-center text-[6rem] leading-none font-bold w-80 h-48 text-black bg-gray-300 text-center">
+          <div class="text-overlay light-text">32</div>
+        </div>
+        <div class="flex items-center justify-center text-[1.75rem] leading-none font-bold w-16 h-10 text-black bg-gray-300 text-center">
+          <div class="text-overlay light-text">32</div>
+        </div>
+        <div class="flex items-center justify-center text-[24px] leading-none font-medium w-12 h-8 text-black bg-gray-300 text-center">
+          <div class="text-overlay light-text">32</div>
+        </div>
       </div>
 
 
       <div class="flex flex-col items-center space-y-4">
         <div class="text-sm font-medium text-gray-700 mb-2">View in dark mode</div>
-
-        <div class="overlay-box w-80 h-48 bg-black flex items-center justify-center text-[6rem] leading-none font-bold text-white text-center" id="big">
+        <div class="overlay-box w-80 h-48 bg-black flex items-center justify-center text-[6rem] leading-none font-bold text-white text-center">
           <div class="gradient-overlay" id="bigGradient"></div>
-          <div class="text-overlay">32</div>
+          <div class="text-overlay dark-text">32</div>
         </div>
-
-        <div class="overlay-box w-16 h-10 bg-black flex items-center justify-center text-[1.75rem] leading-none font-bold text-white text-center" id="xxsmall2">
+        <div class="overlay-box w-16 h-10 bg-black flex items-center justify-center text-[1.75rem] leading-none font-bold text-white text-center">
           <div class="gradient-overlay" id="xxsmall2Gradient"></div>
-          <div class="text-overlay">32</div>
+          <div class="text-overlay dark-text">32</div>
         </div>
-
-        <div class="overlay-box w-12 h-8 bg-black flex items-center justify-center text-[24px] leading-none font-medium text-white text-center" id="xxsmall3">
+        <div class="overlay-box w-12 h-8 bg-black flex items-center justify-center text-[24px] leading-none font-medium text-white text-center">
           <div class="gradient-overlay" id="xxsmall3Gradient"></div>
-          <div class="text-overlay">32</div>
+          <div class="text-overlay dark-text">32</div>
         </div>
       </div>
+
     </div>
   </div>
 
   <script>
     const gradientInput = document.getElementById('gradient');
+    const toggleNumbers = document.getElementById('toggleNumbers');
 
     const darkGradientOverlays = {
       big: document.getElementById('bigGradient'),
@@ -82,18 +97,23 @@
       xxsmall3: document.getElementById('xxsmall3Gradient'),
     };
 
-    const lightBoxes = ['bigLight', 'xxsmall2Light', 'xxsmall3Light'].map(id => document.getElementById(id));
+    const lightBoxes = document.querySelectorAll('.light-text');
+    const darkBoxes = document.querySelectorAll('.dark-text');
 
     gradientInput.addEventListener('input', () => {
       const gradient = gradientInput.value.trim();
-
       for (let key in darkGradientOverlays) {
         darkGradientOverlays[key].style.background = gradient || 'gray';
       }
+      document.querySelectorAll('.light-text').forEach(box => {
+        box.parentElement.style.background = gradient || 'gray';
+      });
+    });
 
-      lightBoxes.forEach(box => {
-        box.style.background = gradient || 'gray';
-        box.style.color = '#000000';
+    toggleNumbers.addEventListener('change', () => {
+      const show = toggleNumbers.checked;
+      [...lightBoxes, ...darkBoxes].forEach(el => {
+        el.style.display = show ? 'block' : 'none';
       });
     });
   </script>
