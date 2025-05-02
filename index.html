@@ -29,19 +29,21 @@
     }
 
     .outline-white {
+      --outline-size: 1px;
       text-shadow:
-        -1px -1px 0 white,
-         1px -1px 0 white,
-        -1px  1px 0 white,
-         1px  1px 0 white;
+        calc(-1 * var(--outline-size)) calc(-1 * var(--outline-size)) 0 white,
+        var(--outline-size) calc(-1 * var(--outline-size)) 0 white,
+        calc(-1 * var(--outline-size)) var(--outline-size) 0 white,
+        var(--outline-size) var(--outline-size) 0 white;
     }
 
     .outline-black {
+      --outline-size: 1px;
       text-shadow:
-        -1px -1px 0 black,
-         1px -1px 0 black,
-        -1px  1px 0 black,
-         1px  1px 0 black;
+        calc(-1 * var(--outline-size)) calc(-1 * var(--outline-size)) 0 black,
+        var(--outline-size) calc(-1 * var(--outline-size)) 0 black,
+        calc(-1 * var(--outline-size)) var(--outline-size) 0 black,
+        var(--outline-size) var(--outline-size) 0 black;
     }
 
     .bg-light-mode {
@@ -88,7 +90,7 @@
       <!-- Light Mode -->
       <div class="flex flex-col items-center space-y-4">
         <div class="text-sm font-medium text-white mb-2">View in light mode</div>
-        <div class="flex items-center justify-center text-[6rem] leading-none font-bold w-80 h-48 text-black bg-gray-300 text-center">
+        <div class="flex items-center justify-center text-[9rem] leading-none font-bold w-80 h-48 text-black bg-gray-300 text-center">
           <div class="text-overlay light-text">32</div>
         </div>
         <div class="flex items-center justify-center text-[1.75rem] leading-none font-bold w-16 h-10 text-black bg-gray-300 text-center">
@@ -102,7 +104,7 @@
       <!-- Dark Mode -->
       <div class="flex flex-col items-center space-y-4">
         <div class="text-sm font-medium text-white mb-2">View in dark mode</div>
-        <div class="overlay-box w-80 h-48 bg-black flex items-center justify-center text-[6rem] leading-none font-bold text-white text-center">
+        <div class="overlay-box w-80 h-48 bg-black flex items-center justify-center text-[9rem] leading-none font-bold text-white text-center">
           <div class="gradient-overlay" id="bigGradient"></div>
           <div class="text-overlay dark-text">32</div>
         </div>
@@ -122,11 +124,11 @@
   <!-- Fleet Table Section -->
   <div class="mt-12 w-full max-w-6xl">
     <h2 class="text-2xl font-bold mb-4 text-[#ffff9e]">Fleet Table</h2>
-    <table class="w-full text-sm text-left border border-grey-300 bg-white">
-      <table class="w-full text-sm text-left border border-grey-300 bg-[#ffffff]">
-        <thead>
-          <th class="p-2 border"></th>
-          <th class="p-2 border"></th>
+    <table class="w-full text-sm text-left border border-grey-300 bg-[#ffffff]">
+      <thead>
+        <tr>
+          <th class="p-2 border">Fleet</th>
+          <th class="p-2 border">Reg</th>
           <th class="p-2 border">Last</th>
           <th class="p-2 border">Tracked</th>
           <th class="p-2 border">Livery</th>
@@ -153,18 +155,33 @@
     const lightBoxes = document.querySelectorAll('.light-text');
     const darkBoxes = document.querySelectorAll('.dark-text');
 
+    function applyOutline(el, colorClass) {
+      const fontSize = parseFloat(getComputedStyle(el).fontSize);
+      let outlineSize = 1;
+      if (fontSize >= 100) {
+        outlineSize = 2; // Large
+      } else if (fontSize >= 20) {
+        outlineSize = 1.25; // Medium
+      } else {
+        el.classList.remove('outline-black', 'outline-white');
+        el.style.textShadow = 'none';
+        return;
+      }
+      el.style.setProperty('--outline-size', `${outlineSize}px`);
+      el.classList.toggle(colorClass, toggleOutlines.checked);
+    }
+
     function updateVisibilityAndOutlines() {
       const showNumbers = toggleNumbers.checked;
-      const showOutlines = toggleOutlines.checked;
 
       lightBoxes.forEach(el => {
         el.style.display = showNumbers ? 'block' : 'none';
-        el.classList.toggle('outline-white', showOutlines);
+        applyOutline(el, 'outline-white');
       });
 
       darkBoxes.forEach(el => {
         el.style.display = showNumbers ? 'block' : 'none';
-        el.classList.toggle('outline-black', showOutlines);
+        applyOutline(el, 'outline-black');
       });
     }
 
