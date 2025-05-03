@@ -61,12 +61,14 @@
     <!-- Left Panel -->
     <div class="md:w-1/3 w-full">
       <h1 class="text-3xl font-bold mb-4 text-center md:text-left text-black dark:text-white">Livery Creator</h1>
+
       <label for="gradient" class="block mb-2 text-sm font-medium text-black dark:text-white">Enter CSS Gradient</label>
       <textarea
         id="gradient"
         placeholder="e.g. linear-gradient(180deg, #000000 50%, #afb6c0 50%)"
         class="w-full p-3 border border-gray-300 shadow-sm rounded"
       ></textarea>
+      <div id="gradientError" class="mt-2 text-sm text-red-600 hidden">Invalid CSS gradient format.</div>
 
       <div class="mt-4">
         <label for="numberInput" class="block mb-2 text-sm font-medium text-black dark:text-white">Set Route Number</label>
@@ -97,7 +99,6 @@
 
     <!-- Right Preview Panel -->
     <div class="md:w-2/3 w-full flex flex-col md:flex-row gap-8">
-
       <!-- Light Mode -->
       <div class="flex flex-col items-center space-y-4">
         <div class="text-sm font-medium text-black dark:text-white mb-2">View in light mode</div>
@@ -128,7 +129,6 @@
           <div class="text-overlay dark-text">32</div>
         </div>
       </div>
-
     </div>
   </div>
 
@@ -157,6 +157,7 @@
     const toggleTheme = document.getElementById('toggleTheme');
     const body = document.getElementById('body');
     const numberInput = document.getElementById('numberInput');
+    const gradientError = document.getElementById('gradientError');
 
     const darkGradientOverlays = {
       big: document.getElementById('bigGradient'),
@@ -166,6 +167,8 @@
 
     const lightBoxes = document.querySelectorAll('.light-text');
     const darkBoxes = document.querySelectorAll('.dark-text');
+
+    let lastValidGradient = '';
 
     function applyOutline(el, colorClass) {
       const fontSize = parseFloat(getComputedStyle(el).fontSize);
@@ -200,17 +203,42 @@
       return transparentRegex.test(gradient);
     }
 
+    function isValidCSSGradient(gradient) {
+      const testEl = document.createElement('div');
+      testEl.style.backgroundImage = '';
+      try {
+        testEl.style.backgroundImage = gradient;
+        return !!testEl.style.backgroundImage;
+      } catch {
+        return false;
+      }
+    }
+
     gradientInput.addEventListener('input', () => {
       const gradient = gradientInput.value.trim();
-      const isTransparent = isGradientTransparent(gradient);
 
-      for (let key in darkGradientOverlays) {
-        darkGradientOverlays[key].style.background = gradient || 'gray';
+      if (!isValidCSSGradient(gradient)) {
+        gradientError.classList.remove('hidden');
+
+        tableBody.querySelectorAll('tr').forEach(row => {
+          const liveryCell = row.cells[4];
+          const box = liveryCell.querySelector('div');
+          if (box) box.style.background = 'white';
+        });
+        return;
       }
 
+      gradientError.classList.add('hidden');
+      lastValidGradient = gradient;
+
+      for (let key in darkGradientOverlays) {
+        darkGradientOverlays[key].style.background = gradient;
+      }
+
+      const isTransparent = isGradientTransparent(gradient);
       document.querySelectorAll('.light-text').forEach(box => {
         const container = box.parentElement;
-        container.style.background = isTransparent ? 'white' : gradient || 'gray';
+        container.style.background = isTransparent ? 'white' : gradient;
       });
 
       renderFleetTable();
@@ -246,7 +274,7 @@
     const tableBody = document.getElementById('fleetTableBody');
 
     function renderFleetTable() {
-      const gradient = gradientInput.value.trim() || 'gray';
+      const gradient = lastValidGradient || 'gray';
       tableBody.innerHTML = '';
       fleetData.forEach(item => {
         const row = document.createElement('tr');
