@@ -214,16 +214,16 @@
       return transparentRegex.test(gradient);
     }
 
-    function isValidCSSGradient(gradient) {
-      const testEl = document.createElement('div');
-      testEl.style.backgroundImage = '';
-      try {
-        testEl.style.backgroundImage = gradient;
-        return !!testEl.style.backgroundImage;
-      } catch {
-        return false;
-      }
+  function isValidCSSGradient(gradient) {
+    const testEl = document.createElement('div');
+    try {
+      testEl.style.background = gradient;
+      // Accept if it's a combination of gradients or ends in a color (solid or transparent)
+      return testEl.style.background !== '';
+    } catch {
+      return false;
     }
+  }
 
     gradientInput.addEventListener('input', () => {
       const gradient = gradientInput.value.trim();
