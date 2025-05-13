@@ -54,12 +54,12 @@
       background-color: #383838;
     }
 
-    /* Add text color for light mode */
+    /* Light mode text css */
     .text-light-mode {
       color: #000000;
     }
 
-    /* Add text color for dark mode */
+    /* Dark Mode Text Css */
     .text-dark-mode {
       color: #000000;
     }
@@ -69,7 +69,7 @@
 <body class="bg-light-mode text-light-mode dark:bg-dark-mode dark:text-dark-mode min-h-screen flex flex-col items-center justify-start p-6 transition-colors duration-300" id="body">
   <div class="w-full max-w-6xl flex flex-col md:flex-row gap-8">
 
-    <!-- Left Panel -->
+    <!-- Left  -->
     <div class="md:w-1/3 w-full">
       <h1 class="text-3xl font-bold mb-4 text-center md:text-left text-light-mode dark:text-dark-mode">Livery Creator</h1>
 
@@ -108,9 +108,9 @@
       </div>
     </div>
 
-    <!-- Right Preview Panel -->
+    <!-- Right Preview Boxes -->
     <div class="md:w-2/3 w-full flex flex-col md:flex-row gap-8">
-      <!-- Light Mode -->
+      <!-- Light Boxes  -->
       <div class="flex flex-col items-center space-y-4">
         <div class="text-sm font-medium text-light-mode dark:text-dark-mode mb-2">View in light mode</div>
         <div class="flex items-center justify-center text-[9rem] leading-none font-bold w-80 h-48 text-black bg-white text-center">
@@ -124,7 +124,7 @@
         </div>
       </div>
 
-      <!-- Dark Mode -->
+      <!-- Dark Boxes -->
       <div class="flex flex-col items-center space-y-4">
         <div class="text-sm font-medium text-light-mode dark:text-dark-mode mb-2">View in dark mode</div>
         <div class="overlay-box w-80 h-48 bg-black flex items-center justify-center text-[9rem] leading-none font-bold text-white text-center">
@@ -143,9 +143,9 @@
     </div>
   </div>
 
-  <!-- Fleet Table Section -->
+  <!-- Fleet Table  -->
   <div class="mt-12 w-full max-w-6xl">
-    <h2 class="text-2xl font-bold mb-4 text-[#ffff9e]">ETM List View</h2>
+    <h2 class="text-2xl font-bold mb-4 text-[#00657b]">ETM List View</h2>
     <table class="w-full text-sm text-left border border-grey-300 bg-[#ffffff]">
       <thead>
         <tr>
@@ -218,7 +218,7 @@
     const testEl = document.createElement('div');
     try {
       testEl.style.background = gradient;
-      // Accept if it's a combination of gradients or ends in a color (solid or transparent)
+
       return testEl.style.background !== '';
     } catch {
       return false;
@@ -273,15 +273,15 @@
         el.textContent = val;
       });
     });
-
+  <!-- Useless fleet shit that just previews haha  -->
     const fleetData = [
-      { fleet: '11702', reg: 'YX73 PCY', route: '59', time: '22:00', type: 'ADL Enviro400 MMC' },
-      { fleet: '11703', reg: 'YX73 PCZ', route: '66', time: '21:09', type: 'ADL Enviro400 MMC' },
-      { fleet: '11705', reg: 'YX73 PDO', route: '1', time: '21:52', type: 'ADL Enviro400 MMC' },
-      { fleet: '11706', reg: 'YX73 PDU', route: '32', time: '08:18', type: 'ADL Enviro400 MMC' },
-      { fleet: '11707', reg: 'YX73 PDV', route: '59a', time: '22:00', type: 'ADL Enviro400 MMC' },
-      { fleet: '11708', reg: 'YX73 PDY', route: '57', time: '18:50', type: 'ADL Enviro400 MMC' },
-      { fleet: '11709', reg: 'YX73 PDZ', route: 'X17', time: '18:37', type: 'ADL Enviro400 MMC' }
+      { fleet: '11702', reg: 'YX73 PCY', route: '444', time: '22:00', type: 'Volvo B5LH Wright Eclipse Gemini 2' },
+      { fleet: '11703', reg: 'YX73 PCZ', route: '59', time: '21:09', type: 'ADL Enviro400 MMC' },
+      { fleet: '11705', reg: 'YX73 PDO', route: '2', time: '21:52', type: 'ADL Enviro400 MMC' },
+      { fleet: '11706', reg: 'YX73 PDU', route: '170', time: '08:18', type: 'Scania N240UD ADL Enviro400 MMC' },
+      { fleet: '11707', reg: 'YX73 PDV', route: '57', time: '22:00', type: 'ADL Enviro400 EV' },
+      { fleet: '11708', reg: 'YX73 PDY', route: 'TRAM,', time: '18:50', type: 'MAN 18.240LF Alexander Dennis Enviro 200' },
+      { fleet: '11709', reg: 'YX73 PDZ', route: 'X17', time: '18:37', type: 'ADL Enviro400 EV' }
     ];
 
     const tableBody = document.getElementById('fleetTableBody');
