@@ -64,6 +64,21 @@
       color: #000000;
     }
 
+    .liverylarge {
+      width: 21rem;
+      height: 14rem
+    }
+
+    .liverymedium {
+      width: 4.5rem;
+      height: 3rem
+    }
+
+    .liverysmall {
+      width: 3rem;
+      height: 2rem
+    }
+
   </style>
 </head>
 <body class="bg-light-mode text-light-mode dark:bg-dark-mode dark:text-dark-mode min-h-screen flex flex-col items-center justify-start p-6 transition-colors duration-300" id="body">
@@ -113,13 +128,13 @@
       <!-- Light Boxes  -->
       <div class="flex flex-col items-center space-y-4">
         <div class="text-sm font-medium text-light-mode dark:text-dark-mode mb-2">View in light mode</div>
-        <div class="flex items-center justify-center text-[9rem] leading-none font-bold w-80 h-48 text-black bg-white text-center">
+        <div class="flex items-center justify-center text-[9rem] leading-none font-bold liverylarge text-black bg-white text-center">
           <div class="text-overlay light-text">32</div>
         </div>
-        <div class="flex items-center justify-center text-[1.75rem] leading-none font-bold w-16 h-10 text-black bg-white text-center">
+        <div class="flex items-center justify-center text-[1.75rem] leading-none font-bold liverymedium text-black bg-white text-center">
           <div class="text-overlay light-text">32</div>
         </div>
-        <div class="flex items-center justify-center text-[24px] leading-none font-medium w-12 h-8 text-black bg-white text-center">
+        <div class="flex items-center justify-center text-[24px] leading-none font-medium liverysmall text-black bg-white text-center">
           <div class="text-overlay light-text">32</div>
         </div>
       </div>
@@ -127,15 +142,15 @@
       <!-- Dark Boxes -->
       <div class="flex flex-col items-center space-y-4">
         <div class="text-sm font-medium text-light-mode dark:text-dark-mode mb-2">View in dark mode</div>
-        <div class="overlay-box w-80 h-48 bg-black flex items-center justify-center text-[9rem] leading-none font-bold text-white text-center">
+        <div class="overlay-box liverylarge bg-black flex items-center justify-center text-[9rem] leading-none font-bold text-white text-center">
           <div class="gradient-overlay" id="bigGradient"></div>
           <div class="text-overlay dark-text">32</div>
         </div>
-        <div class="overlay-box w-16 h-10 bg-black flex items-center justify-center text-[1.75rem] leading-none font-bold text-white text-center">
+        <div class="overlay-box liverymedium bg-black flex items-center justify-center text-[1.75rem] leading-none font-bold text-white text-center">
           <div class="gradient-overlay" id="xxsmall2Gradient"></div>
           <div class="text-overlay dark-text">32</div>
         </div>
-        <div class="overlay-box w-12 h-8 bg-black flex items-center justify-center text-[24px] leading-none font-medium text-white text-center">
+        <div class="overlay-box liverysmall bg-black flex items-center justify-center text-[24px] leading-none font-medium text-white text-center">
           <div class="gradient-overlay" id="xxsmall3Gradient"></div>
           <div class="text-overlay dark-text">32</div>
         </div>
@@ -280,7 +295,7 @@
       { fleet: '11705', reg: 'YX73 PDO', route: '2', time: '21:52', type: 'ADL Enviro400 MMC' },
       { fleet: '11706', reg: 'YX73 PDU', route: '170', time: '08:18', type: 'Scania N240UD ADL Enviro400 MMC' },
       { fleet: '11707', reg: 'YX73 PDV', route: '57', time: '22:00', type: 'ADL Enviro400 EV' },
-      { fleet: '11708', reg: 'YX73 PDY', route: 'TRAM,', time: '18:50', type: 'MAN 18.240LF Alexander Dennis Enviro 200' },
+      { fleet: '11708', reg: 'YX73 PDY', route: 'TRAM', time: '18:50', type: 'MAN 18.240LF Alexander Dennis Enviro 200' },
       { fleet: '11709', reg: 'YX73 PDZ', route: 'X17', time: '18:37', type: 'ADL Enviro400 EV' }
     ];
 
@@ -297,7 +312,7 @@
           <td class="p-2 border">${item.route}</td>
           <td class="p-2 border">${item.time}</td>
           <td class="p-2 border">
-            <div style="width: 3rem; height: 2rem; background: ${gradient}; border: 1px solid #999;"></div>
+            <div class="liverysmall" style="background: ${gradient}; border: 1px solid #999;"></div>
           </td>
           <td class="p-2 border">${item.type}</td>
         `;
