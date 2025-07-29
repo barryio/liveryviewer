@@ -129,13 +129,13 @@
       <div class="flex flex-col items-center space-y-4">
         <div class="text-sm font-medium text-light-mode dark:text-dark-mode mb-2">View in light mode</div>
         <div class="flex items-center justify-center text-[9rem] leading-none font-bold liverylarge text-black bg-white text-center">
-          <div class="text-overlay light-text">32</div>
+          <div class="text-overlay light-text">66</div>
         </div>
         <div class="flex items-center justify-center text-[1.75rem] leading-none font-bold liverymedium text-black bg-white text-center">
-          <div class="text-overlay light-text">32</div>
+          <div class="text-overlay light-text">66</div>
         </div>
         <div class="flex items-center justify-center text-[24px] leading-none font-medium liverysmall text-black bg-white text-center">
-          <div class="text-overlay light-text">32</div>
+          <div class="text-overlay light-text">66</div>
         </div>
       </div>
 
@@ -144,15 +144,15 @@
         <div class="text-sm font-medium text-light-mode dark:text-dark-mode mb-2">View in dark mode</div>
         <div class="overlay-box liverylarge bg-black flex items-center justify-center text-[9rem] leading-none font-bold text-white text-center">
           <div class="gradient-overlay" id="bigGradient"></div>
-          <div class="text-overlay dark-text">32</div>
+          <div class="text-overlay dark-text">66</div>
         </div>
         <div class="overlay-box liverymedium bg-black flex items-center justify-center text-[1.75rem] leading-none font-bold text-white text-center">
           <div class="gradient-overlay" id="xxsmall2Gradient"></div>
-          <div class="text-overlay dark-text">32</div>
+          <div class="text-overlay dark-text">66</div>
         </div>
         <div class="overlay-box liverysmall bg-black flex items-center justify-center text-[24px] leading-none font-medium text-white text-center">
           <div class="gradient-overlay" id="xxsmall3Gradient"></div>
-          <div class="text-overlay dark-text">32</div>
+          <div class="text-overlay dark-text">66</div>
         </div>
       </div>
     </div>
@@ -160,7 +160,7 @@
 
   <!-- Fleet Table  -->
   <div class="mt-12 w-full max-w-6xl">
-    <h2 class="text-2xl font-bold mb-4 text-[#00657b]">ETM List View</h2>
+    <h2 class="text-2xl font-bold mb-4 text-[#00657b]">Vehicle List View</h2>
     <table class="w-full text-sm text-left border border-grey-300 bg-[#ffffff]">
       <thead>
         <tr>
@@ -292,11 +292,11 @@
     const fleetData = [
       { fleet: '73013', reg: 'YH24 MDF', route: '22X', time: '17:10', type: 'Yutong E12' },
       { fleet: '11703', reg: 'YX73 PCZ', route: '59', time: '21:09', type: 'ADL Enviro400 MMC' },
-      { fleet: '11705', reg: 'YX73 PDO', route: '2', time: '21:52', type: 'ADL Enviro400 MMC' },
-      { fleet: '11706', reg: 'YX73 PDU', route: '170', time: '08:18', type: 'Scania N240UD ADL Enviro400 MMC' },
+      { fleet: '11705', reg: 'YX73 PDO', route: '2', time: '21:52', type: 'ADL Enviro200 MMC' },
+      { fleet: '150268', reg: '', route: 'Sheffield > Leeds', time: '08:00', type: 'Class 150C' },
       { fleet: '11707', reg: 'YX73 PDV', route: '57', time: '22:00', type: 'ADL Enviro400 EV' },
-      { fleet: '11708', reg: 'YX73 PDY', route: 'TRAM', time: '18:50', type: 'MAN 18.240LF Alexander Dennis Enviro 200' },
-      { fleet: '11709', reg: 'YX73 PDZ', route: 'X17', time: '18:37', type: 'ADL Enviro400 EV' }
+      { fleet: '1', reg: '', route: 'TRAM', time: '18:50', type: 'MAN 18.240LF Alexander Dennis Enviro 200' },
+      { fleet: '11709', reg: 'YX73 PDZ', route: 'X17', time: '18:37', type: 'ADL Enviro200 EV' }
     ];
 
     const tableBody = document.getElementById('fleetTableBody');
