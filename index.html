@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Livery Creator</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <style>
+    <style>
     #gradient {
       resize: both;
       overflow: auto;
@@ -64,17 +64,17 @@
 
     .liverylarge {
       width: 21rem;
-      height: 14rem
+      height: 14rem;
     }
 
     .liverymedium {
       width: 4.5rem;
-      height: 3rem
+      height: 3rem;
     }
 
     .liverysmall {
       width: 3rem;
-      height: 2rem
+      height: 2rem;
     }
   </style>
 </head>
@@ -248,9 +248,10 @@
     }
 
     function updateTextColor(color) {
-      [...lightBoxes, ...darkBoxes].forEach(el => el.style.color = color);
+      const customColorUsed = color.toLowerCase() !== '#000000';
+      lightBoxes.forEach(el => el.style.color = color);
+      darkBoxes.forEach(el => el.style.color = customColorUsed ? color : '#ffffff');
     }
-
     function isGradientTransparent(gradient) {
       return /rgba?\([^)]*0(?:\.0+)?\)|\btransparent\b/i.test(gradient);
     }
