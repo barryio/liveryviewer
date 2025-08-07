@@ -109,12 +109,17 @@
         </label>
       </div>
 
-      <!-- NEW: Color Pickers -->
+      <!-- Color Pickers + Stroke Toggle + Reset Button -->
       <div class="mt-4 space-y-4">
+        <label class="inline-flex items-center space-x-2">
+          <input type="checkbox" id="enableStroke" class="accent-blue-600" />
+          <span class="text-sm">Enable Stroke</span>
+        </label>
+
         <div>
           <label for="strokeColorInput" class="block text-sm font-medium">Stroke (Outline) Color</label>
           <div class="relative">
-            <input type="text" id="strokeColorInput" value="#000000" maxlength="7" class="w-full p-2 border border-gray-300 rounded" placeholder="#000000" />
+            <input type="text" id="strokeColorInput" value="#ffffff" maxlength="7" class="w-full p-2 border border-gray-300 rounded" placeholder="#ffffff" />
             <input type="color" id="strokeColorPicker" class="absolute right-2 top-1/2 -translate-y-1/2 opacity-0 pointer-events-none" />
           </div>
         </div>
@@ -125,6 +130,8 @@
             <input type="color" id="textColorPicker" class="absolute right-2 top-1/2 -translate-y-1/2 opacity-0 pointer-events-none" />
           </div>
         </div>
+
+        <button id="resetColors" class="mt-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">Reset Colors</button>
       </div>
     </div>
 
@@ -204,10 +211,16 @@
     const strokeColorPicker = document.getElementById('strokeColorPicker');
     const textColorInput = document.getElementById('textColorInput');
     const textColorPicker = document.getElementById('textColorPicker');
+    const enableStroke = document.getElementById('enableStroke');
+    const resetColors = document.getElementById('resetColors');
 
     let lastValidGradient = '';
 
     function applyOutline(el, color) {
+      if (!enableStroke.checked || !toggleOutlines.checked) {
+        el.style.textShadow = 'none';
+        return;
+      }
       const fontSize = parseFloat(getComputedStyle(el).fontSize);
       let size = fontSize >= 100 ? 2 : fontSize >= 20 ? 1.25 : 0;
       el.style.setProperty('--outline-size', `${size}px`);
@@ -269,6 +282,7 @@
 
     toggleNumbers.addEventListener('change', updateVisibilityAndOutlines);
     toggleOutlines.addEventListener('change', updateVisibilityAndOutlines);
+    enableStroke.addEventListener('change', updateVisibilityAndOutlines);
 
     toggleTheme.addEventListener('change', () => {
       const dark = toggleTheme.checked;
@@ -284,7 +298,6 @@
       document.querySelectorAll('.light-text, .dark-text').forEach(el => el.textContent = val);
     });
 
-    // Color Picker Logic
     strokeColorInput.addEventListener('dblclick', () => strokeColorPicker.click());
     textColorInput.addEventListener('dblclick', () => textColorPicker.click());
 
@@ -314,6 +327,16 @@
         textColorPicker.value = color;
         updateTextColor(color);
       }
+    });
+
+    resetColors.addEventListener('click', () => {
+      textColorInput.value = '#000000';
+      strokeColorInput.value = '#ffffff';
+      textColorPicker.value = '#000000';
+      strokeColorPicker.value = '#ffffff';
+      enableStroke.checked = false;
+      updateTextColor('#000000');
+      updateVisibilityAndOutlines();
     });
 
     const fleetData = [
