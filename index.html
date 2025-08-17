@@ -30,7 +30,7 @@
       text-shadow:
         calc(-1 * var(--outline-size)) calc(-1 * var(--outline-size)) 0 white,
         var(--outline-size) calc(-1 * var(--outline-size)) 0 white,
-        calc(-1 * var(--outline-size)) var(--outline-size)) 0 white,
+        calc(-1 * var(--outline-size)) var(--outline-size) 0 white,
         var(--outline-size) var(--outline-size) 0 white;
     }
     .outline-black {
@@ -48,16 +48,16 @@
     .liverylarge { width: 21rem; height: 14rem; }
     .liverymedium { width: 4.5rem; height: 3rem; }
     .liverysmall { width: 3rem; height: 2rem; }
-   
+    
     .bus-times-size-map{
-    width: 1.5rem;   /* 24px */
-    height: 1rem;    /* 16px */
+    width: 1.5rem;  /* 24px */
+    height: 1rem;   /* 16px */
     margin: 0.3em 0.5em 0 0;
     font-size: 1rem; 
     line-height: 1;
     font-weight: bold;
   }
-   
+    
     .bus-times-size {
       height: 1.5em;
       width: 2.25em;
@@ -66,15 +66,8 @@
       line-height: 1;
       font-weight: bold;
     }
-  /* As Per Markeh's Request */
-    .bus-times-size-large {
-    height: 2em;
-    width: 2.5em;
-    margin: 0.5em 0.8em 0 0;
-    font-size: 3rem; /* larger font */
-    line-height: 1;
-    font-weight: bold;
-  }
+
+
 
   </style>
 </head>
@@ -133,6 +126,7 @@
         <button id="showBusTimesSizesBtn" class="px-3 py-1 text-sm rounded-md bg-gray-200 text-black">BusTimes Preview</button>
         <button id="showSiteSizesBtn" class="px-3 py-1 text-sm rounded-md bg-blue-600 text-white">Designer Preview</button>
       </div>
+      
       <div id="siteSizePreviews" class="flex flex-col md:flex-row gap-8">
         <div class="flex flex-col items-center space-y-4">
           <div class="text-sm font-medium mb-2">View in light mode</div>
@@ -163,37 +157,29 @@
         </div>
       </div>
 
-
+      <div id="busTimesSizePreviews" class="hidden flex flex-col md:flex-row gap-8">
         <div class="flex flex-col items-center space-y-4">
-            <div class="text-sm font-medium mb-2">View in light mode</div>
-            <div class="preview-box-light flex items-center justify-center text-black bg-white text-center bus-times-size">
-              <div class="text-overlay light-text">66</div>
-            </div>
-        <div id="busTimesSizePreviews" class="hidden flex flex-col md:flex-row gap-8">
-          <div class="preview-box-light flex items-center justify-center text-black bg-white text-center bus-times-size-map">
-          <div class="text-overlay light-text">66</div>
-        </div>
-        <div class="gradient-overlay" id="busTimesGradient1"></div>
-              <div class="text-overlay dark-text">66</div>
-                  <div class="preview-box-light flex items-center justify-center text-[9rem] leading-none font-bold liverylarge text-black bg-white text-center">
+          <div class="text-sm font-medium mb-2">View in light mode</div>
+          <div class="preview-box-light flex items-center justify-center text-black bg-white text-center bus-times-size">
             <div class="text-overlay light-text">66</div>
+          </div>
+          <div class="preview-box-light flex items-center justify-center text-black bg-white text-center bus-times-size-map">
+            <div class="text-overlay light-text">66</div>
+          </div>
+        </div>
         <div class="flex flex-col items-center space-y-4">
-            <div class="text-sm font-medium mb-2">View in dark mode</div>
-            <div class="preview-box-dark overlay-box bg-black flex items-center justify-center text-white text-center bus-times-size">
-        <div class="preview-box-dark overlay-box bg-black flex items-center justify-center text-white text-center bus-times-size-map">
-          <div class="gradient-overlay" id="busTimesGradientMini"></div>
-          <div class="text-overlay dark-text">66</div>
-        <div class="preview-box-dark overlay-box liverylarge bg-black flex items-center justify-center text-[9rem] leading-none font-bold text-white text-center">
-            <div class="gradient-overlay" id="bigGradient"></div>
+          <div class="text-sm font-medium mb-2">View in dark mode</div>
+          <div class="preview-box-dark overlay-box bg-black flex items-center justify-center text-white text-center bus-times-size">
+            <div class="gradient-overlay" id="busTimesGradientMedium"></div>
+            <div class="text-overlay dark-text">66</div>
+          </div>
+          <div class="preview-box-dark overlay-box bg-black flex items-center justify-center text-white text-center bus-times-size-map">
+            <div class="gradient-overlay" id="busTimesGradientMap"></div>
             <div class="text-overlay dark-text">66</div>
           </div>
         </div>
-          </div>
-            </div>
-            </div>
-          </div>
-        </div>
       </div>
+
     </div>
   </div>
 
@@ -242,7 +228,9 @@
       big: document.getElementById('bigGradient'),
       xxsmall2: document.getElementById('xxsmall2Gradient'),
       xxsmall3: document.getElementById('xxsmall3Gradient'),
-      busTimes1: document.getElementById('busTimesGradient1'),
+      busTimesLarge: document.getElementById('busTimesGradientLarge'),
+      busTimesMedium: document.getElementById('busTimesGradientMedium'),
+      busTimesMap: document.getElementById('busTimesGradientMap'),
     };
     const lightBoxes = document.querySelectorAll('.light-text');
     const darkBoxes = document.querySelectorAll('.dark-text');
@@ -269,10 +257,13 @@
       }
     }
 
-siteSizePreviews.classList.add('hidden');
-busTimesSizePreviews.classList.remove('hidden');
-showBusTimesSizesBtn.classList.add('bg-blue-600', 'text-white');
-showSiteSizesBtn.classList.add('bg-gray-200', 'text-black');
+    // Set initial view to BusTimes preview
+    siteSizePreviews.classList.add('hidden');
+    busTimesSizePreviews.classList.remove('hidden');
+    showBusTimesSizesBtn.classList.add('bg-blue-600', 'text-white');
+    showBusTimesSizesBtn.classList.remove('bg-gray-200', 'text-black');
+    showSiteSizesBtn.classList.add('bg-gray-200', 'text-black');
+    showSiteSizesBtn.classList.remove('bg-blue-600', 'text-white');
 
     function generateTextShadow(color, size) {
       return `-${size} -${size} 0 ${color}, ${size} -${size} 0 ${color}, -${size} ${size} 0 ${color}, ${size} ${size} 0 ${color}`;
