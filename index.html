@@ -385,7 +385,9 @@
     const changesTrigger = document.getElementById('changesTrigger');
     const closeChangesModal = document.getElementById('closeChangesModal');
     const changelogContent = document.getElementById('changelogContent');
-    const changelogURL = 'https://raw.githubusercontent.com/barryio/liveryviewer/main/changes.yaml';
+    
+    const changelogURL = 'changes.yaml';
+
     let changelogData = null; // To cache the fetched data
 
     async function fetchAndRenderChangelog() {
