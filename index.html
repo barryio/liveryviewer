@@ -386,82 +386,127 @@
     const closeChangesModal = document.getElementById('closeChangesModal');
     const changelogContent = document.getElementById('changelogContent');
     
-    const changelogURL = 'changes.yaml';
+    const changelogURL = './changes.yaml';
 
-    let changelogData = null; // To cache the fetched data
+    let changelogData = null; // cache
 
-    async function fetchAndRenderChangelog() {
-      if (changelogData) return; // Don't fetch if already cached
+  function esc(s) {
+    return String(s ?? '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  }
 
-      try {
-        const response = await fetch(changelogURL);
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-        const yamlText = await response.text();
-        changelogData = jsyaml.load(yamlText); // Using the js-yaml library
+  function renderStructured(items) {
+    // items: [{version?, date?, changes: [..]}]
+    let html = '';
+    items.forEach(entry => {
+      const ver = entry.version ? `<h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100">${esc(entry.version)}</h3>` : '';
+      const date = entry.date ? `<p class="text-sm text-gray-500 dark:text-gray-400">${esc(entry.date)}</p>` : '';
+      const head = (ver || date) ? `<div class="flex items-baseline gap-3 mb-2">${ver}${date}</div>` : '';
+      const list = Array.isArray(entry.changes) ? entry.changes.map(c => `<li>${esc(c)}</li>`).join('') : '';
+      html += `<div class="mb-6">${head}<ul class="list-disc list-inside space-y-1">${list}</ul></div>`;
+    });
+    return html || `<p>No changes found.</p>`;
+  }
 
-        let html = '';
-        changelogData.forEach(entry => {
-          html += `<div class="mb-6">`;
-          html += `<div class="flex items-baseline gap-3 mb-2">`;
-          html += `<h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100">${entry.version}</h3>`;
-          html += `<p class="text-sm text-gray-500 dark:text-gray-400">${entry.date}</p>`;
-          html += `</div>`;
-          html += `<ul class="list-disc list-inside space-y-1">`;
-          entry.changes.forEach(change => {
-            html += `<li>${change}</li>`;
-          });
-          html += `</ul>`;
-          html += `</div>`;
-        });
-        changelogContent.innerHTML = html;
-      } catch (error) {
-        changelogContent.innerHTML = `<p class="text-red-500">Failed to load changelog. Please check the console for details.</p>`;
-        console.error("Changelog fetch/parse error:", error);
+  function renderFlat(lines) {
+    // lines: ["date | note", ...] OR just ["note", ...]
+    let html = '<div class="space-y-3">';
+    lines.forEach(line => {
+      // split on first pipe
+      const m = String(line).split('|');
+      if (m.length >= 2) {
+        const date = esc(m.shift().trim());
+        const note = esc(m.join('|').trim());
+        html += `<div><div class="text-sm text-gray-500 dark:text-gray-400 mb-0.5">${date}</div><div>• ${note}</div></div>`;
+      } else {
+        html += `<div>• ${esc(line)}</div>`;
       }
-    }
+    });
+    html += '</div>';
+    return html;
+  }
 
-    function showModal() {
-      fetchAndRenderChangelog();
-      changesModal.classList.remove('hidden');
-    }
+  async function fetchAndRenderChangelog() {
+    if (changelogData) return;
 
-    function hideModal() {
-      changesModal.classList.add('hidden');
-    }
-    
-    function handleHashChange() {
-        if (window.location.hash === '#changes') {
-            showModal();
+    try {
+      // cache-bust so GH Pages picks up fresh edits; allow reloads while modal stays open
+      const url = `${changelogURL}?v=${Date.now()}`;
+      const response = await fetch(url, { cache: 'no-store' });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const yamlText = await response.text();
+      const parsed = jsyaml.load(yamlText);
+
+      // Normalise: accept either structured releases or flat list
+      // 1) If it looks like [{changes:[...]}], treat as structured
+      // 2) If it's just an array of strings, treat as flat
+      // 3) If it's a single object (map of version -> changes[]), convert to structured
+      let html = '';
+      if (Array.isArray(parsed)) {
+        const looksStructured = parsed.every(
+          x => typeof x === 'object' && x && Array.isArray(x.changes)
+        );
+        if (looksStructured) {
+          changelogData = parsed;
+          html = renderStructured(parsed);
         } else {
-            hideModal();
+          changelogData = parsed.map(String);
+          html = renderFlat(changelogData);
         }
+      } else if (parsed && typeof parsed === 'object') {
+        // e.g. { v1.0.1: ["Fix A","Add B"], v1.0.0: ["Init"] }
+        const items = Object.entries(parsed).map(([version, changes]) => ({
+          version,
+          date: '', // unknown
+          changes: Array.isArray(changes) ? changes : [String(changes)]
+        }));
+        changelogData = items;
+        html = renderStructured(items);
+      } else {
+        throw new Error('Unsupported YAML structure');
+      }
+
+      changelogContent.innerHTML = html;
+    } catch (error) {
+      changelogContent.innerHTML = `<p class="text-red-500">Failed to load changelog. Check the file format and that <code>changes.yaml</code> is next to this page.</p>`;
+      console.error('Changelog fetch/parse error:', error);
     }
+  }
 
-    changesTrigger.addEventListener('click', () => {
-        window.location.hash = '#changes';
-    });
+  function showModal() {
+    fetchAndRenderChangelog();
+    changesModal.classList.remove('hidden');
+  }
 
-    closeChangesModal.addEventListener('click', () => {
-        history.pushState("", document.title, window.location.pathname + window.location.search);
-        hideModal();
-    });
-    
-    // Close modal if user clicks on the background overlay
-    changesModal.addEventListener('click', (event) => {
-        if (event.target === changesModal) {
-            history.pushState("", document.title, window.location.pathname + window.location.search);
-            hideModal();
-        }
-    });
+  function hideModal() {
+    changesModal.classList.add('hidden');
+  }
 
-    window.addEventListener('hashchange', handleHashChange);
+  function handleHashChange() {
+    if (window.location.hash === '#changes') {
+      showModal();
+    } else {
+      hideModal();
+    }
+  }
 
-    // Initial setup calls
-    renderFleetTable();
-    updateVisibilityAndOutlines();
-    updateTextColor(textColorInput.value);
-    handleHashChange(); // Check hash on page load
+  changesTrigger.addEventListener('click', () => {
+    window.location.hash = '#changes';
+  });
 
+  closeChangesModal.addEventListener('click', () => {
+    history.pushState('', document.title, window.location.pathname + window.location.search);
+    hideModal();
+  });
+
+  changesModal.addEventListener('click', (event) => {
+    if (event.target === changesModal) {
+      history.pushState('', document.title, window.location.pathname + window.location.search);
+      hideModal();
+    }
+  });
+
+  window.addEventListener('hashchange', handleHashChange);
+  handleHashChange(); // in case the page loads with #changes
   </script>
 </body>
 </html>
