@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Livery Creator</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
     <style>
     #gradient {
       resize: both;
@@ -12,31 +13,26 @@
       min-width: 250px;
       min-height: 50px;
     }
-
     .overlay-box {
       position: relative;
       overflow: hidden;
     }
-
     .gradient-overlay {
       position: absolute;
       inset: 0;
     }
-
     .text-overlay {
       position: relative;
       z-index: 10;
     }
-
     .outline-white {
       --outline-size: 1px;
       text-shadow:
         calc(-1 * var(--outline-size)) calc(-1 * var(--outline-size)) 0 white,
         var(--outline-size) calc(-1 * var(--outline-size)) 0 white,
-        calc(-1 * var(--outline-size)) var(--outline-size) 0 white,
+        calc(-1 * var(--outline-size)) var(--outline-size)) 0 white,
         var(--outline-size) var(--outline-size) 0 white;
     }
-
     .outline-black {
       --outline-size: 1px;
       text-shadow:
@@ -45,38 +41,13 @@
         calc(-1 * var(--outline-size)) var(--outline-size) 0 black,
         var(--outline-size) var(--outline-size) 0 black;
     }
-
-    .bg-light-mode {
-      background-color: #ffffff;
-    }
-
-    .bg-dark-mode {
-      background-color: #383838;
-    }
-
-    .text-light-mode {
-      color: #000000;
-    }
-
-    .text-dark-mode {
-      color: #000000;
-    }
-
-    .liverylarge {
-      width: 21rem;
-      height: 14rem;
-    }
-
-    .liverymedium {
-      width: 4.5rem;
-      height: 3rem;
-    }
-
-    .liverysmall {
-      width: 3rem;
-      height: 2rem;
-    }
-
+    .bg-light-mode { background-color: #ffffff; }
+    .bg-dark-mode { background-color: #383838; }
+    .text-light-mode { color: #000000; }
+    .text-dark-mode { color: #000000; }
+    .liverylarge { width: 21rem; height: 14rem; }
+    .liverymedium { width: 4.5rem; height: 3rem; }
+    .liverysmall { width: 3rem; height: 2rem; }
     .bus-times-size {
       height: 1.5em;
       width: 2.25em;
@@ -92,16 +63,13 @@
 
     <div class="md:w-1/3 w-full">
       <h1 class="text-3xl font-bold mb-4 text-center md:text-left text-light-mode dark:text-dark-mode">Livery Creator</h1>
-
       <label for="gradient" class="block mb-2 text-sm font-medium">Enter CSS Gradient</label>
       <textarea id="gradient" placeholder="e.g. linear-gradient(180deg, #000000 50%, #afb6c0 50%)" class="w-full p-3 border border-gray-300 shadow-sm rounded"></textarea>
       <div id="gradientError" class="mt-2 text-sm text-red-600 hidden">Invalid CSS gradient format.</div>
-
       <div class="mt-4">
         <label for="numberInput" class="block mb-2 text-sm font-medium">Set Route Number</label>
         <input id="numberInput" type="text" maxlength="3" placeholder="Enter number (e.g. 59a)" class="w-full p-2 border border-gray-300 rounded" />
       </div>
-
       <div class="mt-4 space-y-2">
         <label class="inline-flex items-center space-x-2">
           <input type="checkbox" id="toggleNumbers" checked class="accent-blue-600">
@@ -116,13 +84,11 @@
           <span class="text-sm">Dark Mode</span>
         </label>
       </div>
-
       <div class="mt-4 space-y-4">
         <label class="inline-flex items-center space-x-2">
           <input type="checkbox" id="enableStroke" class="accent-blue-600" />
           <span class="text-sm">Enable Text Stroke</span>
         </label>
-
         <div>
           <label for="strokeColorInput" class="block text-sm font-medium">Stroke (Outline) Color</label>
           <div class="relative">
@@ -137,7 +103,6 @@
             <input type="color" id="textColorPicker" class="absolute right-2 top-1/2 -translate-y-1/2 opacity-0 pointer-events-none" />
           </div>
         </div>
-
         <button id="resetColors" class="mt-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">Reset Colors</button>
       </div>
     </div>
@@ -145,10 +110,9 @@
     <div class="md:w-2/3 w-full flex flex-col gap-4">
       <div class="flex items-center space-x-2 border-b border-gray-300 pb-2">
         <span class="font-medium">Preview Sizes:</span>
-        <button id="showSiteSizesBtn" class="px-3 py-1 text-sm rounded-md bg-blue-600 text-white">Site Sizes</button>
-        <button id="showBusTimesSizesBtn" class="px-3 py-1 text-sm rounded-md bg-gray-200 text-black">Bus Times Sizes</button>
+        <button id="showBusTimesSizesBtn" class="px-3 py-1 text-sm rounded-md bg-gray-200 text-black">BusTimes Preview</button>
+        <button id="showSiteSizesBtn" class="px-3 py-1 text-sm rounded-md bg-blue-600 text-white">Designer Preview</button>
       </div>
-
       <div id="siteSizePreviews" class="flex flex-col md:flex-row gap-8">
         <div class="flex flex-col items-center space-y-4">
           <div class="text-sm font-medium mb-2">View in light mode</div>
@@ -162,7 +126,6 @@
             <div class="text-overlay light-text">66</div>
           </div>
         </div>
-
         <div class="flex flex-col items-center space-y-4">
           <div class="text-sm font-medium mb-2">View in dark mode</div>
           <div class="preview-box-dark overlay-box liverylarge bg-black flex items-center justify-center text-[9rem] leading-none font-bold text-white text-center">
@@ -179,23 +142,21 @@
           </div>
         </div>
       </div>
-
       <div id="busTimesSizePreviews" class="hidden flex flex-col md:flex-row gap-8">
         <div class="flex flex-col items-center space-y-4">
-            <div class="text-sm font-medium mb-2">View in light mode</div>
-            <div class="preview-box-light flex items-center justify-center text-black bg-white text-center bus-times-size">
-                <div class="text-overlay light-text">66</div>
-            </div>
+          <div class="text-sm font-medium mb-2">View in light mode</div>
+          <div class="preview-box-light flex items-center justify-center text-black bg-white text-center bus-times-size">
+            <div class="text-overlay light-text">66</div>
+          </div>
         </div>
         <div class="flex flex-col items-center space-y-4">
-            <div class="text-sm font-medium mb-2">View in dark mode</div>
-            <div class="preview-box-dark overlay-box bg-black flex items-center justify-center text-white text-center bus-times-size">
-                <div class="gradient-overlay" id="busTimesGradient1"></div>
-                <div class="text-overlay dark-text">66</div>
-            </div>
+          <div class="text-sm font-medium mb-2">View in dark mode</div>
+          <div class="preview-box-dark overlay-box bg-black flex items-center justify-center text-white text-center bus-times-size">
+            <div class="gradient-overlay" id="busTimesGradient1"></div>
+            <div class="text-overlay dark-text">66</div>
+          </div>
         </div>
       </div>
-
     </div>
   </div>
 
@@ -204,19 +165,31 @@
     <table class="w-full text-sm text-left border border-grey-300 bg-[#ffffff]">
       <thead>
         <tr>
-          <th class="p-2 border">Fleet</th>
-          <th class="p-2 border">Reg</th>
-          <th class="p-2 border">Last</th>
-          <th class="p-2 border">Tracked</th>
-          <th class="p-2 border">Livery</th>
-          <th class="p-2 border">Type</th>
+          <th class="p-2 border">Fleet</th><th class="p-2 border">Reg</th><th class="p-2 border">Last</th><th class="p-2 border">Tracked</th><th class="p-2 border">Livery</th><th class="p-2 border">Type</th>
         </tr>
       </thead>
       <tbody id="fleetTableBody"></tbody>
     </table>
   </div>
 
+  <button id="changesTrigger" class="fixed bottom-4 left-4 px-4 py-2 bg-gray-700 text-white text-sm rounded-lg shadow-lg hover:bg-gray-800 transition-colors">
+    Site Changes
+  </button>
+
+  <div id="changesModal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4">
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-2xl w-full max-w-2xl max-h-[80vh] flex flex-col">
+      <div class="flex justify-between items-center p-4 border-b border-gray-200 dark:border-gray-700">
+        <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100">Site Changelog</h2>
+        <button id="closeChangesModal" class="text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 text-3xl leading-none">&times;</button>
+      </div>
+      <div id="changelogContent" class="p-6 overflow-y-auto text-gray-700 dark:text-gray-300">
+        <p>Loading changes...</p>
+      </div>
+    </div>
+  </div>
+
   <script>
+    // --- Existing App Logic ---
     const gradientInput = document.getElementById('gradient');
     const toggleNumbers = document.getElementById('toggleNumbers');
     const toggleOutlines = document.getElementById('toggleOutlines');
@@ -224,31 +197,24 @@
     const numberInput = document.getElementById('numberInput');
     const body = document.getElementById('body');
     const gradientError = document.getElementById('gradientError');
-
     const showSiteSizesBtn = document.getElementById('showSiteSizesBtn');
     const showBusTimesSizesBtn = document.getElementById('showBusTimesSizesBtn');
     const siteSizePreviews = document.getElementById('siteSizePreviews');
     const busTimesSizePreviews = document.getElementById('busTimesSizePreviews');
-
     const darkGradientOverlays = {
       big: document.getElementById('bigGradient'),
       xxsmall2: document.getElementById('xxsmall2Gradient'),
       xxsmall3: document.getElementById('xxsmall3Gradient'),
       busTimes1: document.getElementById('busTimesGradient1'),
-      busTimes2: document.getElementById('busTimesGradient2'),
-      busTimes3: document.getElementById('busTimesGradient3'),
     };
-
     const lightBoxes = document.querySelectorAll('.light-text');
     const darkBoxes = document.querySelectorAll('.dark-text');
-
     const strokeColorInput = document.getElementById('strokeColorInput');
     const strokeColorPicker = document.getElementById('strokeColorPicker');
     const textColorInput = document.getElementById('textColorInput');
     const textColorPicker = document.getElementById('textColorPicker');
     const enableStroke = document.getElementById('enableStroke');
     const resetColors = document.getElementById('resetColors');
-
     let lastValidGradient = '';
 
     function applyOutline(el, color) {
@@ -273,8 +239,6 @@
     function updateVisibilityAndOutlines() {
       const showNumbers = toggleNumbers.checked;
       const showOutlines = toggleOutlines.checked;
-
-      // Update visibility and text outlines for all text elements
       lightBoxes.forEach(el => {
         el.style.display = showNumbers ? 'block' : 'none';
         applyOutline(el, strokeColorInput.value);
@@ -283,8 +247,6 @@
         el.style.display = showNumbers ? 'block' : 'none';
         applyOutline(el, strokeColorInput.value);
       });
-      
-      // Update box outlines
       document.querySelectorAll('.preview-box-light').forEach(box => {
         box.classList.toggle('border', showOutlines);
         box.classList.toggle('border-black', showOutlines);
@@ -300,7 +262,7 @@
       lightBoxes.forEach(el => el.style.color = color);
       darkBoxes.forEach(el => el.style.color = customColorUsed ? color : '#ffffff');
     }
-    
+
     function isGradientTransparent(gradient) {
       return /rgba?\([^)]*0(?:\.0+)?\)|\btransparent\b/i.test(gradient);
     }
@@ -323,7 +285,7 @@
       }
       gradientError.classList.add('hidden');
       lastValidGradient = gradient;
-      Object.values(darkGradientOverlays).forEach(el => el.style.background = gradient);
+      Object.values(darkGradientOverlays).forEach(el => el && (el.style.background = gradient));
       document.querySelectorAll('.light-text').forEach(box => {
         box.parentElement.style.background = isGradientTransparent(gradient) ? 'white' : gradient;
       });
@@ -343,41 +305,32 @@
     });
 
     numberInput.addEventListener('input', (e) => {
-      const val = e.target.value.trim() || '66'; // Default to 66 if empty
+      const val = e.target.value.trim() || '66';
       document.querySelectorAll('.light-text, .dark-text').forEach(el => el.textContent = val);
     });
 
     strokeColorInput.addEventListener('dblclick', () => strokeColorPicker.click());
     textColorInput.addEventListener('dblclick', () => textColorPicker.click());
-
     strokeColorPicker.addEventListener('input', (e) => {
-      const color = e.target.value;
-      strokeColorInput.value = color;
+      strokeColorInput.value = e.target.value;
       updateVisibilityAndOutlines();
     });
-
     textColorPicker.addEventListener('input', (e) => {
-      const color = e.target.value;
-      textColorInput.value = color;
-      updateTextColor(color);
+      textColorInput.value = e.target.value;
+      updateTextColor(e.target.value);
     });
-
     strokeColorInput.addEventListener('input', (e) => {
-      const color = e.target.value;
-      if (/^#[0-9a-fA-F]{6}$/.test(color)) {
-        strokeColorPicker.value = color;
+      if (/^#[0-9a-fA-F]{6}$/.test(e.target.value)) {
+        strokeColorPicker.value = e.target.value;
         updateVisibilityAndOutlines();
       }
     });
-
     textColorInput.addEventListener('input', (e) => {
-      const color = e.target.value;
-      if (/^#[0-9a-fA-F]{6}$/.test(color)) {
-        textColorPicker.value = color;
-        updateTextColor(color);
+      if (/^#[0-9a-fA-F]{6}$/.test(e.target.value)) {
+        textColorPicker.value = e.target.value;
+        updateTextColor(e.target.value);
       }
     });
-
     resetColors.addEventListener('click', () => {
       textColorInput.value = '#000000';
       strokeColorInput.value = '#ffffff';
@@ -389,33 +342,32 @@
     });
 
     showSiteSizesBtn.addEventListener('click', () => {
-        siteSizePreviews.classList.remove('hidden');
-        busTimesSizePreviews.classList.add('hidden');
-        showSiteSizesBtn.classList.add('bg-blue-600', 'text-white');
-        showSiteSizesBtn.classList.remove('bg-gray-200', 'text-black');
-        showBusTimesSizesBtn.classList.add('bg-gray-200', 'text-black');
-        showBusTimesSizesBtn.classList.remove('bg-blue-600', 'text-white');
+      siteSizePreviews.classList.remove('hidden');
+      busTimesSizePreviews.classList.add('hidden');
+      showSiteSizesBtn.classList.add('bg-blue-600', 'text-white');
+      showSiteSizesBtn.classList.remove('bg-gray-200', 'text-black');
+      showBusTimesSizesBtn.classList.add('bg-gray-200', 'text-black');
+      showBusTimesSizesBtn.classList.remove('bg-blue-600', 'text-white');
     });
 
     showBusTimesSizesBtn.addEventListener('click', () => {
-        siteSizePreviews.classList.add('hidden');
-        busTimesSizePreviews.classList.remove('hidden');
-        showBusTimesSizesBtn.classList.add('bg-blue-600', 'text-white');
-        showBusTimesSizesBtn.classList.remove('bg-gray-200', 'text-black');
-        showSiteSizesBtn.classList.add('bg-gray-200', 'text-black');
-        showSiteSizesBtn.classList.remove('bg-blue-600', 'text-white');
+      siteSizePreviews.classList.add('hidden');
+      busTimesSizePreviews.classList.remove('hidden');
+      showBusTimesSizesBtn.classList.add('bg-blue-600', 'text-white');
+      showBusTimesSizesBtn.classList.remove('bg-gray-200', 'text-black');
+      showSiteSizesBtn.classList.add('bg-gray-200', 'text-black');
+      showSiteSizesBtn.classList.remove('bg-blue-600', 'text-white');
     });
 
     const fleetData = [
-      { fleet: '73013', reg: 'YH24 MDF', route: '22X', time: '17:10', type: 'Yutong E12' },
-      { fleet: '11703', reg: 'YX73 PCZ', route: '59', time: '21:09', type: 'ADL Enviro400 MMC' },
-      { fleet: '11705', reg: 'YX73 PDO', route: '2', time: '21:52', type: 'ADL Enviro200 MMC' },
-      { fleet: '150268', reg: '', route: 'Sheffield > Leeds', time: '08:00', type: 'Class 150C' },
-      { fleet: '11707', reg: 'YX73 PDV', route: '57', time: '22:00', type: 'ADL Enviro400 EV' },
-      { fleet: '1', reg: '', route: 'TRAM', time: '18:50', type: 'MAN 18.240LF Alexander Dennis Enviro 200' },
-      { fleet: '11709', reg: 'YX73 PDZ', route: 'X17', time: '18:37', type: 'ADL Enviro200 EV' }
+        { fleet: '73013', reg: 'YH24 MDF', route: '22X', time: '17:10', type: 'Yutong E12' },
+        { fleet: '11703', reg: 'YX73 PCZ', route: '59', time: '21:09', type: 'ADL Enviro400 MMC' },
+        { fleet: '11705', reg: 'YX73 PDO', route: '2', time: '21:52', type: 'ADL Enviro200 MMC' },
+        { fleet: '150268', reg: '', route: 'Sheffield > Leeds', time: '08:00', type: 'Class 150C' },
+        { fleet: '11707', reg: 'YX73 PDV', route: '57', time: '22:00', type: 'ADL Enviro400 EV' },
+        { fleet: '28932', reg: '', route: '64', time: '18:50', type: 'MAN 18.240LF Alexander Dennis Enviro200 MMC' },
+        { fleet: '11709', reg: 'YX73 PDZ', route: 'X17', time: '18:37', type: 'ADL Enviro200 EV' }
     ];
-
     const tableBody = document.getElementById('fleetTableBody');
 
     function renderFleetTable() {
@@ -423,24 +375,91 @@
       tableBody.innerHTML = '';
       fleetData.forEach(item => {
         const row = document.createElement('tr');
-        row.innerHTML = `
-          <td class="p-2 border">${item.fleet}</td>
-          <td class="p-2 border">${item.reg}</td>
-          <td class="p-2 border">${item.route}</td>
-          <td class="p-2 border">${item.time}</td>
-          <td class="p-2 border">
-            <div class="liverysmall" style="background: ${gradient}; border: 1px solid #999;"></div>
-          </td>
-          <td class="p-2 border">${item.type}</td>
-        `;
+        row.innerHTML = `<td class="p-2 border">${item.fleet}</td><td class="p-2 border">${item.reg}</td><td class="p-2 border">${item.route}</td><td class="p-2 border">${item.time}</td><td class="p-2 border"><div class="liverysmall" style="background: ${gradient}; border: 1px solid #999;"></div></td><td class="p-2 border">${item.type}</td>`;
         tableBody.appendChild(row);
       });
     }
+
+    // --- New Changelog Logic ---
+    const changesModal = document.getElementById('changesModal');
+    const changesTrigger = document.getElementById('changesTrigger');
+    const closeChangesModal = document.getElementById('closeChangesModal');
+    const changelogContent = document.getElementById('changelogContent');
+    const changelogURL = 'https://raw.githubusercontent.com/barryio/liveryviewer/main/changes.yaml';
+    let changelogData = null; // To cache the fetched data
+
+    async function fetchAndRenderChangelog() {
+      if (changelogData) return; // Don't fetch if already cached
+
+      try {
+        const response = await fetch(changelogURL);
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        const yamlText = await response.text();
+        changelogData = jsyaml.load(yamlText); // Using the js-yaml library
+
+        let html = '';
+        changelogData.forEach(entry => {
+          html += `<div class="mb-6">`;
+          html += `<div class="flex items-baseline gap-3 mb-2">`;
+          html += `<h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100">${entry.version}</h3>`;
+          html += `<p class="text-sm text-gray-500 dark:text-gray-400">${entry.date}</p>`;
+          html += `</div>`;
+          html += `<ul class="list-disc list-inside space-y-1">`;
+          entry.changes.forEach(change => {
+            html += `<li>${change}</li>`;
+          });
+          html += `</ul>`;
+          html += `</div>`;
+        });
+        changelogContent.innerHTML = html;
+      } catch (error) {
+        changelogContent.innerHTML = `<p class="text-red-500">Failed to load changelog. Please check the console for details.</p>`;
+        console.error("Changelog fetch/parse error:", error);
+      }
+    }
+
+    function showModal() {
+      fetchAndRenderChangelog();
+      changesModal.classList.remove('hidden');
+    }
+
+    function hideModal() {
+      changesModal.classList.add('hidden');
+    }
+    
+    function handleHashChange() {
+        if (window.location.hash === '#changes') {
+            showModal();
+        } else {
+            hideModal();
+        }
+    }
+
+    changesTrigger.addEventListener('click', () => {
+        window.location.hash = '#changes';
+    });
+
+    closeChangesModal.addEventListener('click', () => {
+        history.pushState("", document.title, window.location.pathname + window.location.search);
+        hideModal();
+    });
+    
+    // Close modal if user clicks on the background overlay
+    changesModal.addEventListener('click', (event) => {
+        if (event.target === changesModal) {
+            history.pushState("", document.title, window.location.pathname + window.location.search);
+            hideModal();
+        }
+    });
+
+    window.addEventListener('hashchange', handleHashChange);
 
     // Initial setup calls
     renderFleetTable();
     updateVisibilityAndOutlines();
     updateTextColor(textColorInput.value);
+    handleHashChange(); // Check hash on page load
+
   </script>
 </body>
 </html>
