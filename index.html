@@ -76,12 +76,20 @@
       width: 3rem;
       height: 2rem;
     }
+
+    .bus-times-size {
+      height: 1.5em;
+      width: 2.25em;
+      margin: 0.3em 0.5em 0 0;
+      font-size: 2rem;
+      line-height: 1;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body class="bg-light-mode text-light-mode dark:bg-dark-mode dark:text-dark-mode min-h-screen flex flex-col items-center justify-start p-6 transition-colors duration-300" id="body">
   <div class="w-full max-w-6xl flex flex-col md:flex-row gap-8">
 
-    <!-- Left Panel -->
     <div class="md:w-1/3 w-full">
       <h1 class="text-3xl font-bold mb-4 text-center md:text-left text-light-mode dark:text-dark-mode">Livery Creator</h1>
 
@@ -109,11 +117,10 @@
         </label>
       </div>
 
-      <!-- Color Pickers + Stroke Toggle + Reset Button -->
       <div class="mt-4 space-y-4">
         <label class="inline-flex items-center space-x-2">
           <input type="checkbox" id="enableStroke" class="accent-blue-600" />
-          <span class="text-sm">Enable Stroke</span>
+          <span class="text-sm">Enable Text Stroke</span>
         </label>
 
         <div>
@@ -135,42 +142,77 @@
       </div>
     </div>
 
-    <!-- Right Panel Preview -->
-    <div class="md:w-2/3 w-full flex flex-col md:flex-row gap-8">
-      <!-- Light Boxes -->
-      <div class="flex flex-col items-center space-y-4">
-        <div class="text-sm font-medium mb-2">View in light mode</div>
-        <div class="flex items-center justify-center text-[9rem] leading-none font-bold liverylarge text-black bg-white text-center">
-          <div class="text-overlay light-text">66</div>
+    <div class="md:w-2/3 w-full flex flex-col gap-4">
+      <div class="flex items-center space-x-2 border-b border-gray-300 pb-2">
+        <span class="font-medium">Preview Sizes:</span>
+        <button id="showSiteSizesBtn" class="px-3 py-1 text-sm rounded-md bg-blue-600 text-white">Site Sizes</button>
+        <button id="showBusTimesSizesBtn" class="px-3 py-1 text-sm rounded-md bg-gray-200 text-black">Bus Times Sizes</button>
+      </div>
+
+      <div id="siteSizePreviews" class="flex flex-col md:flex-row gap-8">
+        <div class="flex flex-col items-center space-y-4">
+          <div class="text-sm font-medium mb-2">View in light mode</div>
+          <div class="preview-box-light flex items-center justify-center text-[9rem] leading-none font-bold liverylarge text-black bg-white text-center">
+            <div class="text-overlay light-text">66</div>
+          </div>
+          <div class="preview-box-light flex items-center justify-center text-[1.75rem] leading-none font-bold liverymedium text-black bg-white text-center">
+            <div class="text-overlay light-text">66</div>
+          </div>
+          <div class="preview-box-light flex items-center justify-center text-[24px] leading-none font-medium liverysmall text-black bg-white text-center">
+            <div class="text-overlay light-text">66</div>
+          </div>
         </div>
-        <div class="flex items-center justify-center text-[1.75rem] leading-none font-bold liverymedium text-black bg-white text-center">
-          <div class="text-overlay light-text">66</div>
-        </div>
-        <div class="flex items-center justify-center text-[24px] leading-none font-medium liverysmall text-black bg-white text-center">
-          <div class="text-overlay light-text">66</div>
+
+        <div class="flex flex-col items-center space-y-4">
+          <div class="text-sm font-medium mb-2">View in dark mode</div>
+          <div class="preview-box-dark overlay-box liverylarge bg-black flex items-center justify-center text-[9rem] leading-none font-bold text-white text-center">
+            <div class="gradient-overlay" id="bigGradient"></div>
+            <div class="text-overlay dark-text">66</div>
+          </div>
+          <div class="preview-box-dark overlay-box liverymedium bg-black flex items-center justify-center text-[1.75rem] leading-none font-bold text-white text-center">
+            <div class="gradient-overlay" id="xxsmall2Gradient"></div>
+            <div class="text-overlay dark-text">66</div>
+          </div>
+          <div class="preview-box-dark overlay-box liverysmall bg-black flex items-center justify-center text-[24px] leading-none font-medium text-white text-center">
+            <div class="gradient-overlay" id="xxsmall3Gradient"></div>
+            <div class="text-overlay dark-text">66</div>
+          </div>
         </div>
       </div>
 
-      <!-- Dark Boxes -->
-      <div class="flex flex-col items-center space-y-4">
-        <div class="text-sm font-medium mb-2">View in dark mode</div>
-        <div class="overlay-box liverylarge bg-black flex items-center justify-center text-[9rem] leading-none font-bold text-white text-center">
-          <div class="gradient-overlay" id="bigGradient"></div>
-          <div class="text-overlay dark-text">66</div>
+      <div id="busTimesSizePreviews" class="hidden flex flex-col md:flex-row gap-8">
+        <div class="flex flex-col items-center space-y-4">
+            <div class="text-sm font-medium mb-2">View in light mode</div>
+            <div class="preview-box-light flex items-center justify-center text-black bg-white text-center bus-times-size">
+                <div class="text-overlay light-text">66</div>
+            </div>
+             <div class="preview-box-light flex items-center justify-center text-black bg-white text-center bus-times-size">
+                <div class="text-overlay light-text">66</div>
+            </div>
+             <div class="preview-box-light flex items-center justify-center text-black bg-white text-center bus-times-size">
+                <div class="text-overlay light-text">66</div>
+            </div>
         </div>
-        <div class="overlay-box liverymedium bg-black flex items-center justify-center text-[1.75rem] leading-none font-bold text-white text-center">
-          <div class="gradient-overlay" id="xxsmall2Gradient"></div>
-          <div class="text-overlay dark-text">66</div>
-        </div>
-        <div class="overlay-box liverysmall bg-black flex items-center justify-center text-[24px] leading-none font-medium text-white text-center">
-          <div class="gradient-overlay" id="xxsmall3Gradient"></div>
-          <div class="text-overlay dark-text">66</div>
+        <div class="flex flex-col items-center space-y-4">
+            <div class="text-sm font-medium mb-2">View in dark mode</div>
+            <div class="preview-box-dark overlay-box bg-black flex items-center justify-center text-white text-center bus-times-size">
+                <div class="gradient-overlay" id="busTimesGradient1"></div>
+                <div class="text-overlay dark-text">66</div>
+            </div>
+            <div class="preview-box-dark overlay-box bg-black flex items-center justify-center text-white text-center bus-times-size">
+                <div class="gradient-overlay" id="busTimesGradient2"></div>
+                <div class="text-overlay dark-text">66</div>
+            </div>
+            <div class="preview-box-dark overlay-box bg-black flex items-center justify-center text-white text-center bus-times-size">
+                <div class="gradient-overlay" id="busTimesGradient3"></div>
+                <div class="text-overlay dark-text">66</div>
+            </div>
         </div>
       </div>
+
     </div>
   </div>
 
-  <!-- Fleet Table -->
   <div class="mt-12 w-full max-w-6xl">
     <h2 class="text-2xl font-bold mb-4 text-[#00657b]">Vehicle List View</h2>
     <table class="w-full text-sm text-left border border-grey-300 bg-[#ffffff]">
@@ -188,7 +230,6 @@
     </table>
   </div>
 
-  <!-- Script -->
   <script>
     const gradientInput = document.getElementById('gradient');
     const toggleNumbers = document.getElementById('toggleNumbers');
@@ -198,10 +239,18 @@
     const body = document.getElementById('body');
     const gradientError = document.getElementById('gradientError');
 
+    const showSiteSizesBtn = document.getElementById('showSiteSizesBtn');
+    const showBusTimesSizesBtn = document.getElementById('showBusTimesSizesBtn');
+    const siteSizePreviews = document.getElementById('siteSizePreviews');
+    const busTimesSizePreviews = document.getElementById('busTimesSizePreviews');
+
     const darkGradientOverlays = {
       big: document.getElementById('bigGradient'),
       xxsmall2: document.getElementById('xxsmall2Gradient'),
       xxsmall3: document.getElementById('xxsmall3Gradient'),
+      busTimes1: document.getElementById('busTimesGradient1'),
+      busTimes2: document.getElementById('busTimesGradient2'),
+      busTimes3: document.getElementById('busTimesGradient3'),
     };
 
     const lightBoxes = document.querySelectorAll('.light-text');
@@ -236,14 +285,27 @@
     }
 
     function updateVisibilityAndOutlines() {
-      const show = toggleNumbers.checked;
+      const showNumbers = toggleNumbers.checked;
+      const showOutlines = toggleOutlines.checked;
+
+      // Update visibility and text outlines for all text elements
       lightBoxes.forEach(el => {
-        el.style.display = show ? 'block' : 'none';
+        el.style.display = showNumbers ? 'block' : 'none';
         applyOutline(el, strokeColorInput.value);
       });
       darkBoxes.forEach(el => {
-        el.style.display = show ? 'block' : 'none';
+        el.style.display = showNumbers ? 'block' : 'none';
         applyOutline(el, strokeColorInput.value);
+      });
+      
+      // Update box outlines
+      document.querySelectorAll('.preview-box-light').forEach(box => {
+        box.classList.toggle('border', showOutlines);
+        box.classList.toggle('border-black', showOutlines);
+      });
+      document.querySelectorAll('.preview-box-dark').forEach(box => {
+        box.classList.toggle('border', showOutlines);
+        box.classList.toggle('border-white', showOutlines);
       });
     }
 
@@ -252,6 +314,7 @@
       lightBoxes.forEach(el => el.style.color = color);
       darkBoxes.forEach(el => el.style.color = customColorUsed ? color : '#ffffff');
     }
+    
     function isGradientTransparent(gradient) {
       return /rgba?\([^)]*0(?:\.0+)?\)|\btransparent\b/i.test(gradient);
     }
@@ -294,8 +357,7 @@
     });
 
     numberInput.addEventListener('input', (e) => {
-      const val = e.target.value.trim();
-      if (!/^[a-zA-Z0-9]{1,3}$/.test(val)) return;
+      const val = e.target.value.trim() || '66'; // Default to 66 if empty
       document.querySelectorAll('.light-text, .dark-text').forEach(el => el.textContent = val);
     });
 
@@ -340,6 +402,24 @@
       updateVisibilityAndOutlines();
     });
 
+    showSiteSizesBtn.addEventListener('click', () => {
+        siteSizePreviews.classList.remove('hidden');
+        busTimesSizePreviews.classList.add('hidden');
+        showSiteSizesBtn.classList.add('bg-blue-600', 'text-white');
+        showSiteSizesBtn.classList.remove('bg-gray-200', 'text-black');
+        showBusTimesSizesBtn.classList.add('bg-gray-200', 'text-black');
+        showBusTimesSizesBtn.classList.remove('bg-blue-600', 'text-white');
+    });
+
+    showBusTimesSizesBtn.addEventListener('click', () => {
+        siteSizePreviews.classList.add('hidden');
+        busTimesSizePreviews.classList.remove('hidden');
+        showBusTimesSizesBtn.classList.add('bg-blue-600', 'text-white');
+        showBusTimesSizesBtn.classList.remove('bg-gray-200', 'text-black');
+        showSiteSizesBtn.classList.add('bg-gray-200', 'text-black');
+        showSiteSizesBtn.classList.remove('bg-blue-600', 'text-white');
+    });
+
     const fleetData = [
       { fleet: '73013', reg: 'YH24 MDF', route: '22X', time: '17:10', type: 'Yutong E12' },
       { fleet: '11703', reg: 'YX73 PCZ', route: '59', time: '21:09', type: 'ADL Enviro400 MMC' },
@@ -371,6 +451,7 @@
       });
     }
 
+    // Initial setup calls
     renderFleetTable();
     updateVisibilityAndOutlines();
     updateTextColor(textColorInput.value);
