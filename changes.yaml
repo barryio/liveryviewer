@@ -3,6 +3,8 @@
   changes:
     - Added matching livery box sizes much like BusTimes livery boxes. :)
     - Tweaked outlines in small preview.
+    - Defaulted to BusTimes Livery Preview category
+    - Added Site Changes API using YAML and added a button to view site changes on the website.
 - version: v1.0.0
   date: 2025-04-01
   changes:

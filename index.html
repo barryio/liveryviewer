@@ -160,6 +160,9 @@
       <div id="busTimesSizePreviews" class="hidden flex flex-col md:flex-row gap-8">
         <div class="flex flex-col items-center space-y-4">
           <div class="text-sm font-medium mb-2">View in light mode</div>
+          <div class="preview-box-light flex items-center justify-center text-black bg-white text-center bus-times-size-large">
+            <div class="text-overlay light-text">66</div>
+          </div>
           <div class="preview-box-light flex items-center justify-center text-black bg-white text-center bus-times-size">
             <div class="text-overlay light-text">66</div>
           </div>
@@ -168,7 +171,7 @@
           </div>
         </div>
         <div class="flex flex-col items-center space-y-4">
-          <div class="text-sm font-medium mb-2">View in dark mode</div>
+          <div class="text-sm font-medium mb-2">View in dark mode</d
           <div class="preview-box-dark overlay-box bg-black flex items-center justify-center text-white text-center bus-times-size">
             <div class="gradient-overlay" id="busTimesGradientMedium"></div>
             <div class="text-overlay dark-text">66</div>
@@ -420,7 +423,7 @@
     const closeChangesModal = document.getElementById('closeChangesModal');
     const changelogContent = document.getElementById('changelogContent');
     
-    const changelogURL = './changes.yaml';
+const changelogURL = 'https://raw.githubusercontent.com/barryio/liveryviewer/main/changes.yaml';
 
     let changelogData = null; // cache
 
